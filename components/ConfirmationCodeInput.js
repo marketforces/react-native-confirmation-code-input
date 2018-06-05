@@ -195,7 +195,7 @@ export default class ConfirmationCodeInput extends Component {
   
   _onKeyPress(e) {
     if (e.nativeEvent.key === 'Backspace') {
-      if (Math.abs(this.lastKeyEventTimestamp - e.timeStamp) < 50) return;
+      if (Math.abs(this.lastKeyEventTimestamp - e.timeStamp) < 100) return;
       const { currentIndex } = this.state;
       const nextIndex = currentIndex > 0 ? currentIndex - 1 : 0;
       this._setFocus(nextIndex);
