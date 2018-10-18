@@ -207,10 +207,19 @@ export default class ConfirmationCodeInput extends Component {
   
   _onInputCode(character, index) {
     const { codeLength, onFulfill, compareWithCode, ignoreCase } = this.props;
+
     let newCodeArr = _.clone(this.state.codeArr);
-    newCodeArr[index] = character;
+    let currentIndex;
+
+    if (character.length > 1) {
+      newCodeArr = character.slice(0, codeLength).split('')
+      currentIndex = newCodeArr.length - 1;
+    } else {
+      newCodeArr[index] = character;
+      currentIndex = this.state.currentIndex;
+    }
     
-    if (index == codeLength - 1) {
+    if (currentIndex == codeLength - 1) {
       const code = newCodeArr.join('');
       
       if (compareWithCode) {
@@ -220,15 +229,15 @@ export default class ConfirmationCodeInput extends Component {
       } else {
         onFulfill(code);
       }
-      this._blur(this.state.currentIndex);
+      this._blur(currentIndex);
     } else {
-      this._setFocus(this.state.currentIndex + 1);
+      this._setFocus(currentIndex + 1);
     }
-    
+
     this.setState(prevState => {
       return {
         codeArr: newCodeArr,
-        currentIndex: prevState.currentIndex + 1
+        currentIndex: currentIndex + 1
       };
     });
   }
@@ -273,7 +282,6 @@ export default class ConfirmationCodeInput extends Component {
           value={this.state.codeArr[id] ? this.state.codeArr[id].toString() : ''}
           onChangeText={text => this._onInputCode(text, id)}
           onKeyPress={(e) => this._onKeyPress(e)}
-          maxLength={1}
         />
       )
     }
