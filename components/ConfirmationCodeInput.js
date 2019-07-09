@@ -35,7 +35,8 @@ export default class ConfirmationCodeInput extends Component {
     inactiveColor: 'rgba(255, 255, 255, 0.2)',
     space: 8,
     compareWithCode: '',
-    ignoreCase: false
+    ignoreCase: false,
+    includeWidth: true
   };
   
   constructor(props) {
@@ -251,13 +252,15 @@ export default class ConfirmationCodeInput extends Component {
       autoFocus,
       className,
       size,
-      activeColor
+      activeColor,
+      includeWidth
     } = this.props;
     
     const initialCodeInputStyle = {
-      width: size,
+      // width: size, TODO(Brandon): Figure out why this line breaks the app on ios for RN 0.59.10 on the confirm SSN screen.
       height: size
     };
+    if (includeWidth) { initialCodeInputStyle.width = size; }
     
     let codeInputs = [];
     for (let i = 0; i < codeLength; i++) {
